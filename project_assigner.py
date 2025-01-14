@@ -28,29 +28,11 @@ class Project:
         self.minGrade = minGrade
         self.enrolledStudents = []
 
-    def decreaseAvailability(self):
-        self.availability -= 1
-
-    def updateStudentOrder(self):
-        self.enrolledStudents.sort(key=lambda student: student.grade, reverse=True)
-
-    def enrollStudent(self, student: Student):
-        if student.grade < self.minGrade:
-            #print(student.code + "'s grade is too low")
-            pass
-        elif self.availability > 0:
-            self.enrolledStudents.append(student)
-            self.decreaseAvailability()
-            #print("student " + student.code + " enrolled in " + self.code)
-        elif student.grade > self.enrolledStudents[-1].grade:
-            removed = self.enrolledStudents.pop()
-            self.enrolledStudents.append(student)
-            student.match()
-            self.updateStudentOrder()
-            #print("student " + removed.code + " removed from " + self.code)
-        else:
-            #print("student " + student.code + " rejected from " + self.code)
-            pass
+    def checkAvailability(self):
+        if len(self.enrolledStudents) > self.availability:
+            self.enrolledStudents.sort(key=lambda student: student.grade, reverse=True)
+            return self.enrolledStudents.pop()
+        return 0
 
     def displayStudents(self):
         names = []
@@ -59,29 +41,16 @@ class Project:
         return names
     
 def enrollStudent(project: Project, student: Student, students: list):
-    if student.grade < project.minGrade:
-        #print(student.code + "'s grade is too low")
-        pass
-    elif project.availability > 0:
-        project.enrolledStudents.append(student)
-        project.decreaseAvailability()
-        #print("student " + student.code + " enrolled in " + self.code)
-    elif student.grade > project.enrolledStudents[-1].grade:
-        removed = project.enrolledStudents.pop()
-        index = students.index(removed)
-        students[index].unmatch()
-        project.enrolledStudents.append(student)
+    if student.grade >= project.minGrade:
         student.match()
-        project.updateStudentOrder()
-        #print("student " + removed.code + " removed from " + self.code)
-    else:
-        #print("student " + student.code + " rejected from " + self.code)
-        pass
+        project.enrolledStudents.append(student)
+        removed = project.checkAvailability()
+        if removed:
+            index = students.index(removed)
+            students[index].unmatch()
 
-def main():
-    students = []
-    projects = []
-    with open("input.txt", "r") as input:
+def read_file(filename, students, projects):
+    with open(filename, "r") as input:
         for _ in range(3):
             next(input)
         for line in input:
@@ -94,6 +63,12 @@ def main():
         for line in input:
             data = re.split(r'[()]', line)
             students.append(Student(data[1], data[3].split(", "), int(data[5])))
+        
+
+def main():
+    students = []
+    projects = []
+    read_file("input.txt", students, projects)
 
     every_student_matched = False
     while(not every_student_matched):
