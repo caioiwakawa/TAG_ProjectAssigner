@@ -38,7 +38,7 @@ class Project:
         names = []
         for i in self.enrolledStudents:
             names.append(i.code)
-        return names
+        return f"{self.code}: {names}"
     
 def enrollStudent(project: Project, student: Student, students: list):
     if student.grade >= project.minGrade:
@@ -89,6 +89,7 @@ def main():
             preference = student.getPreference()
             enrollStudent(projects[int(preference[1:]) - 1], student, students)
 
+    print("\n----------------\n")
     for project in projects:
         print(project.displayStudents())
 
