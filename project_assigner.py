@@ -89,7 +89,7 @@ def main():
             preference = student.getPreference()
             enrollStudent(projects[int(preference[1:]) - 1], student, students)
 
-    print("\n----------------\n")
+    print("\n--------------------------------\n\nPAREAMENTO FINAL\n")
     for project in projects:
         print(project.displayStudents())
 

@@ -4,7 +4,7 @@
 
 O código recebe como entrada o arquivo input.txt e aplica o algoritmo aos grupos de estudantes e projetos ditados no texto, imprimindo os pareamentos sendo feitos e desfeitos durante a execução. Após a execução, é impresso todos os projetos e seus estudantes matriculados.
 
-A implementação realizada é orientada ao estudante, e portanto e favorece as preferências dos estudantes acima das preferências dos projetos, em média.
+A implementação realizada é orientada ao estudante, e portanto favorece as preferências dos estudantes acima das preferências dos projetos, em geral.
 
 ## Utilização
 
